@@ -115,7 +115,6 @@ class Mappers {
             case "bluetoothProximity": return DiscoveryMethod.bluetoothProximity
             case "bluetoothScan": return DiscoveryMethod.bluetoothScan
             case "internet": return DiscoveryMethod.internet
-            case "localMobile": return DiscoveryMethod.localMobile
             default: return DiscoveryMethod.internet
             }
         }
@@ -130,8 +129,6 @@ class Mappers {
             return try BluetoothProximityDiscoveryConfigurationBuilder().setSimulated(simulated).build()
         case "internet":
             return try InternetDiscoveryConfigurationBuilder().setSimulated(simulated).build()
-        case "localMobile":
-            return try LocalMobileDiscoveryConfigurationBuilder().setSimulated(simulated).build()
         @unknown default:
             print("⚠️ Unknown discovery method! Defaulting to Bluetooth Scan.")
             return try BluetoothScanDiscoveryConfigurationBuilder().setSimulated(simulated).setTimeout(timeout).build()

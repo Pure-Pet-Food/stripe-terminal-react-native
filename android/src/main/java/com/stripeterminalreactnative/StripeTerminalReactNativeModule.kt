@@ -217,9 +217,6 @@ class StripeTerminalReactNativeModule(reactContext: ReactApplicationContext) :
                     getBoolean(params, "simulated")
                 )
                 DiscoveryMethod.HANDOFF -> DiscoveryConfiguration.HandoffDiscoveryConfiguration()
-                DiscoveryMethod.LOCAL_MOBILE -> DiscoveryConfiguration.LocalMobileDiscoveryConfiguration(
-                    getBoolean(params, "simulated")
-                ) },
             listener,
             listener
         )
@@ -305,12 +302,6 @@ class StripeTerminalReactNativeModule(reactContext: ReactApplicationContext) :
     @Suppress("unused")
     fun connectInternetReader(params: ReadableMap, promise: Promise) {
         connectReader(params, promise, DiscoveryMethod.INTERNET)
-    }
-
-    @ReactMethod
-    @Suppress("unused")
-    fun connectLocalMobileReader(params: ReadableMap, promise: Promise) {
-        connectReader(params, promise, DiscoveryMethod.LOCAL_MOBILE)
     }
 
     @ReactMethod

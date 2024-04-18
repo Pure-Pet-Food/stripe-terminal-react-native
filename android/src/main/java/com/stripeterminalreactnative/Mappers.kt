@@ -160,7 +160,6 @@ internal fun mapToDiscoveryMethod(method: String?): DiscoveryMethod? {
     return when (method) {
         "bluetoothScan" -> DiscoveryMethod.BLUETOOTH_SCAN
         "internet" -> DiscoveryMethod.INTERNET
-        "localMobile" -> DiscoveryMethod.LOCAL_MOBILE
         "handoff" -> DiscoveryMethod.HANDOFF
         "usb" -> DiscoveryMethod.USB
         else -> null

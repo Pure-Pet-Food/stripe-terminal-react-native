@@ -45,15 +45,6 @@ export type ConnectUsbReaderParams = {
   autoReconnectOnUnexpectedDisconnect?: boolean;
 };
 
-export type ConnectLocalMobileParams = {
-  reader: Reader.Type;
-  locationId?: string;
-  onBehalfOf?: string;
-  merchantDisplayName?: string;
-  tosAcceptancePermitted?: boolean;
-  autoReconnectOnUnexpectedDisconnect?: boolean;
-};
-
 export type ConnectHandoffParams = {
   reader: Reader.Type;
   locationId?: string;

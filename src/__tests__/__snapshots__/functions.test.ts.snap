@@ -22,7 +22,6 @@ Object {
   "connectBluetoothReader": [Function],
   "connectHandoffReader": [Function],
   "connectInternetReader": [Function],
-  "connectLocalMobileReader": [Function],
   "connectUsbReader": [Function],
   "createPaymentIntent": [Function],
   "createSetupIntent": [Function],

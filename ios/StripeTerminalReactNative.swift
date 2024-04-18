@@ -24,7 +24,7 @@ enum ReactNativeConstants: String, CaseIterable {
 }
 
 @objc(StripeTerminalReactNative)
-class StripeTerminalReactNative: RCTEventEmitter, DiscoveryDelegate, BluetoothReaderDelegate, LocalMobileReaderDelegate, TerminalDelegate, ReconnectionDelegate, OfflineDelegate {
+class StripeTerminalReactNative: RCTEventEmitter, DiscoveryDelegate, BluetoothReaderDelegate, TerminalDelegate, ReconnectionDelegate, OfflineDelegate {
     var discoveredReadersList: [Reader]? = nil
     var paymentIntents: [AnyHashable : PaymentIntent] = [:]
     var setupIntents: [AnyHashable : SetupIntent] = [:]
@@ -291,52 +291,6 @@ class StripeTerminalReactNative: RCTEventEmitter, DiscoveryDelegate, BluetoothRe
                 resolve(["reader": Mappers.mapFromReader(reader)])
             } else if let error = error as NSError? {
                 resolve(Errors.createError(nsError: error))
-            }
-        }
-    }
-
-    @objc(connectLocalMobileReader:resolver:rejecter:)
-    func connectLocalMobileReader(params: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
-        guard let reader = params["reader"] as? NSDictionary else {
-            resolve(Errors.createError(code: CommonErrorType.InvalidRequiredParameter, message: "You must provide a reader object"))
-            return
-        }
-
-        // since simulated readers don't contain `id` property we take serialNumber as a fallback
-        let readerId = reader["serialNumber"] as? String
-
-        guard let selectedReader = discoveredReadersList?.first(where: { $0.serialNumber == readerId }) else {
-            resolve(Errors.createError(code: CommonErrorType.InvalidRequiredParameter, message: "Could not find reader with id \(readerId ?? "")"))
-            return
-        }
-
-        let locationId = params["locationId"] as? String
-        let onBehalfOf: String? = params["onBehalfOf"] as? String
-        let merchantDisplayName: String? = params["merchantDisplayName"] as? String
-        let tosAcceptancePermitted: Bool = params["tosAcceptancePermitted"] as? Bool ?? true
-        let autoReconnectOnUnexpectedDisconnect = params["autoReconnectOnUnexpectedDisconnect"] as? Bool ?? false
-
-        let connectionConfig: LocalMobileConnectionConfiguration
-        do {
-            connectionConfig = try LocalMobileConnectionConfigurationBuilder(locationId: locationId ?? selectedReader.locationId ?? "")
-                .setMerchantDisplayName(merchantDisplayName ?? nil)
-                .setOnBehalfOf(onBehalfOf ?? nil)
-                .setTosAcceptancePermitted(tosAcceptancePermitted)
-                .setAutoReconnectOnUnexpectedDisconnect(autoReconnectOnUnexpectedDisconnect)
-                .setAutoReconnectionDelegate(autoReconnectOnUnexpectedDisconnect ? self : nil)
-                .build()
-        }  catch {
-            resolve(Errors.createError(nsError: error as NSError))
-            return
-        }
-
-        Terminal.shared.connectLocalMobileReader(selectedReader, delegate: self, connectionConfig: connectionConfig) { reader, error in
-            if let reader = reader {
-                resolve(["reader": Mappers.mapFromReader(reader)])
-            } else if let error = error as NSError? {
-                resolve(Errors.createError(nsError: error))
-            } else {
-                resolve([:])
             }
         }
     }
@@ -1182,41 +1136,6 @@ class StripeTerminalReactNative: RCTEventEmitter, DiscoveryDelegate, BluetoothRe
     func reader(_ reader: Reader, didDisconnect reason: DisconnectReason) {
         let result = Mappers.mapFromReaderDisconnectReason(reason)
         sendEvent(withName: ReactNativeConstants.DISCONNECT.rawValue, body: ["reason": result])
-    }
-
-    func localMobileReader(_ reader: Reader, didStartInstallingUpdate update: ReaderSoftwareUpdate, cancelable: Cancelable?) {
-        self.installUpdateCancelable = cancelable
-        sendEvent(withName: ReactNativeConstants.START_INSTALLING_UPDATE.rawValue, body: ["result": Mappers.mapFromReaderSoftwareUpdate(update) ?? [:]])
-    }
-
-    func localMobileReader(_ reader: Reader, didReportReaderSoftwareUpdateProgress progress: Float) {
-        let result: [AnyHashable : Any?] = [
-            "progress": String(progress),
-        ]
-        sendEvent(withName: ReactNativeConstants.REPORT_UPDATE_PROGRESS.rawValue, body: ["result": result])
-    }
-
-    func localMobileReader(_ reader: Reader, didFinishInstallingUpdate update: ReaderSoftwareUpdate?, error: Error?) {
-        var result = Mappers.mapFromReaderSoftwareUpdate(update) ?? [:]
-        if let nsError = error as NSError? {
-           let errorAsDictionary = Errors.createError(nsError: nsError)
-            // createError will return a dictionary of ["error": {the error}]
-            // so merge that with the result so we have a single result.error
-            result = result.merging(errorAsDictionary, uniquingKeysWith: { _, error in
-                error
-            })
-        }
-        sendEvent(withName: ReactNativeConstants.FINISH_INSTALLING_UPDATE.rawValue, body: ["result": result])
-    }
-
-    func localMobileReader(_ reader: Reader, didRequestReaderInput inputOptions: ReaderInputOptions = []) {
-        let result = Mappers.mapFromReaderInputOptions(inputOptions)
-        sendEvent(withName: ReactNativeConstants.REQUEST_READER_INPUT.rawValue, body: ["result": result])
-    }
-
-    func localMobileReader(_ reader: Reader, didRequestReaderDisplayMessage displayMessage: ReaderDisplayMessage) {
-        let result = Mappers.mapFromReaderDisplayMessage(displayMessage)
-        sendEvent(withName: ReactNativeConstants.REQUEST_READER_DISPLAY_MESSAGE.rawValue, body: ["result": result])
     }
 
     func terminal(_ terminal: Terminal, didChange offlineStatus: OfflineStatus) {

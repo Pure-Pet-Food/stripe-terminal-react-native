@@ -25,7 +25,6 @@ import type {
   Reader,
   RefundParams,
   ConfirmRefundResultType,
-  ConnectLocalMobileParams,
   ConnectReaderResultType,
   ConnectHandoffParams,
   CollectPaymentMethodParams,
@@ -160,32 +159,6 @@ export async function connectHandoffReader(
       };
     }
   }, 'connectHandoffReader')(params);
-}
-
-export async function connectLocalMobileReader(
-  params: ConnectLocalMobileParams
-): Promise<ConnectReaderResultType> {
-  return Logger.traceSdkMethod(async (innerParams) => {
-    try {
-      const { error, reader } =
-        await StripeTerminalSdk.connectLocalMobileReader(innerParams);
-
-      if (error) {
-        return {
-          error,
-          reader: undefined,
-        };
-      }
-      return {
-        reader: reader!,
-        error: undefined,
-      };
-    } catch (error) {
-      return {
-        error: error as any,
-      };
-    }
-  }, 'connectLocalMobileReader')(params);
 }
 
 export async function connectInternetReader(

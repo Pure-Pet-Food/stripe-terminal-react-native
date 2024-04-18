@@ -50,8 +50,6 @@ export default function DiscoveryMethodScreen() {
         Discover a reader connected to this device via USB.
       </Text>
 
-      <ListItem onPress={() => onSelect('localMobile')} title="Local mobile" />
-
       {Platform.OS === 'android' && (
         <ListItem onPress={() => onSelect('handoff')} title="Handoff" />
       )}

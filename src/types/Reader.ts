@@ -30,7 +30,6 @@ export namespace Reader {
       | 'bluetoothProximity'
       | 'bluetoothScan'
       | 'internet'
-      | 'localMobile';
   }
 
   export namespace Android {
@@ -51,7 +50,6 @@ export namespace Reader {
     export type DiscoveryMethod =
       | 'bluetoothScan'
       | 'internet'
-      | 'localMobile'
       | 'handoff'
       | 'usb';
   }

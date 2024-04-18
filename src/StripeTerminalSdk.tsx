@@ -25,7 +25,6 @@ import type {
   ConfirmRefundResultType,
   SetConnectionTokenParams,
   ConnectHandoffParams,
-  ConnectLocalMobileParams,
   ConnectReaderResultType,
   CollectPaymentMethodParams,
   PaymentIntent,
@@ -65,9 +64,6 @@ export interface StripeTerminalSdkType {
   ): Promise<ConnectReaderResultType>;
   connectHandoffReader(
     params: ConnectHandoffParams
-  ): Promise<ConnectReaderResultType>;
-  connectLocalMobileReader(
-    params: ConnectLocalMobileParams
   ): Promise<ConnectReaderResultType>;
   // Connect to reader via USB
   connectUsbReader(

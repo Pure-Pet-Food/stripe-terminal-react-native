@@ -334,8 +334,6 @@ function mapFromDiscoveryMethod(method: Reader.DiscoveryMethod) {
       return 'Internet';
     case 'handoff':
       return 'Handoff';
-    case 'localMobile':
-      return 'Local mobile';
     case 'usb':
       return 'USB';
     default:

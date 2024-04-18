@@ -12,7 +12,6 @@ import type {
   CollectSetupIntentPaymentMethodParams,
   RefundParams,
   ConnectHandoffParams,
-  ConnectLocalMobileParams,
   CollectPaymentMethodParams,
   StripeError,
   PaymentStatus,
@@ -53,7 +52,6 @@ import {
   cancelCollectPaymentMethod,
   cancelCollectSetupIntent,
   connectHandoffReader,
-  connectLocalMobileReader,
   setSimulatedCard,
   cancelCollectRefundPaymentMethod,
   getOfflineStatus,
@@ -423,26 +421,6 @@ export function useStripeTerminal(props?: Props) {
       const response = await connectUsbReader(params);
 
       if (response.reader && !response.error) {
-        setConnectedReader(response.reader);
-      }
-      setLoading(false);
-
-      return response;
-    },
-    [_isInitialized, setConnectedReader, setLoading]
-  );
-
-  const _connectLocalMobileReader = useCallback(
-    async (params: ConnectLocalMobileParams) => {
-      if (!_isInitialized()) {
-        console.error(NOT_INITIALIZED_ERROR_MESSAGE);
-        throw Error(NOT_INITIALIZED_ERROR_MESSAGE);
-      }
-      setLoading(true);
-
-      const response = await connectLocalMobileReader(params);
-
-      if (response.reader) {
         setConnectedReader(response.reader);
       }
       setLoading(false);
@@ -961,7 +939,6 @@ export function useStripeTerminal(props?: Props) {
     cancelCollectRefundPaymentMethod: _cancelCollectRefundPaymentMethod,
     cancelCollectSetupIntent: _cancelCollectSetupIntent,
     connectHandoffReader: _connectHandoffReader,
-    connectLocalMobileReader: _connectLocalMobileReader,
     setSimulatedCard: _setSimulatedCard,
     getOfflineStatus: _getOfflineStatus,
     getReaderSettings: _getReaderSettings,

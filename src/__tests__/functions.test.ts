@@ -76,9 +76,6 @@ describe('functions.test.ts', () => {
         connectUsbReader: jest
           .fn()
           .mockImplementation(() => ({ reader: mockReader })),
-        connectLocalMobileReader: jest
-          .fn()
-          .mockImplementation(() => ({ reader: mockReader })),
         createPaymentIntent: jest
           .fn()
           .mockImplementation(() => ({ paymentIntent: mockPaymentIntent })),
@@ -355,16 +352,6 @@ describe('functions.test.ts', () => {
       await expect(functions.cancelCollectSetupIntent()).resolves.toEqual({});
     });
 
-    it('connectLocalMobileReader returns a proper value', async () => {
-      const functions = require('../functions');
-      await expect(
-        functions.connectLocalMobileReader({} as any)
-      ).resolves.toEqual({
-        error: undefined,
-        reader: mockReader,
-      });
-    });
-
     it('setSimulatedCard returns a proper value', async () => {
       const functions = require('../functions');
       await expect(functions.setSimulatedCard('_number')).resolves.toEqual({});
@@ -395,9 +382,6 @@ describe('functions.test.ts', () => {
           .fn()
           .mockImplementation(() => ({ error: '_error' })),
         connectUsbReader: jest
-          .fn()
-          .mockImplementation(() => ({ error: '_error' })),
-        connectLocalMobileReader: jest
           .fn()
           .mockImplementation(() => ({ error: '_error' })),
         createPaymentIntent: jest
@@ -632,16 +616,6 @@ describe('functions.test.ts', () => {
       await expect(functions.confirmRefund()).resolves.toEqual({
         error: '_error',
         refund: undefined,
-      });
-    });
-
-    it('connectLocalMobileReader returns a proper value', async () => {
-      const functions = require('../functions');
-      await expect(
-        functions.connectLocalMobileReader({} as any)
-      ).resolves.toEqual({
-        error: '_error',
-        reader: undefined,
       });
     });
 

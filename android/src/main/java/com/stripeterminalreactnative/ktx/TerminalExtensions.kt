@@ -9,7 +9,6 @@ import com.stripe.stripeterminal.external.callable.ReaderReconnectionListener
 import com.stripe.stripeterminal.external.models.ConnectionConfiguration.BluetoothConnectionConfiguration
 import com.stripe.stripeterminal.external.models.ConnectionConfiguration.HandoffConnectionConfiguration
 import com.stripe.stripeterminal.external.models.ConnectionConfiguration.InternetConnectionConfiguration
-import com.stripe.stripeterminal.external.models.ConnectionConfiguration.LocalMobileConnectionConfiguration
 import com.stripe.stripeterminal.external.models.ConnectionConfiguration.UsbConnectionConfiguration
 import com.stripe.stripeterminal.external.models.Reader
 import com.stripe.stripeterminal.external.models.TerminalException
@@ -55,17 +54,6 @@ suspend fun Terminal.connectInternetReader(
 ): Reader {
     return readerCallbackCoroutine { connectInternetReader(reader, config, it) }
 }
-
-/**
- * @see [Terminal.connectLocalMobileReader]
- */
-suspend fun Terminal.connectLocalMobileReader(
-    reader: Reader,
-    config: LocalMobileConnectionConfiguration
-): Reader {
-    return readerCallbackCoroutine { connectLocalMobileReader(reader, config, it) }
-}
-
 /**
  * @see [Terminal.connectUsbReader]
  */
@@ -113,14 +101,6 @@ suspend fun Terminal.connectReader(
             connectBluetoothReader(reader, connConfig)
         }
     }
-    DiscoveryMethod.LOCAL_MOBILE -> connectLocalMobileReader(
-        reader,
-        LocalMobileConnectionConfiguration(
-            locationId,
-            autoReconnectOnUnexpectedDisconnect,
-            reconnectionListener
-        )
-    )
     DiscoveryMethod.INTERNET -> connectInternetReader(reader, InternetConnectionConfiguration())
     DiscoveryMethod.HANDOFF -> {
         if (listener is HandoffReaderListener) {

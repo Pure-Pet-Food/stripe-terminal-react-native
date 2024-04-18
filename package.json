@@ -1,5 +1,5 @@
 {
-  "name": "@stripe/stripe-terminal-react-native",
+  "name": "@purepetfood/stripe-terminal-react-native",
   "version": "0.0.1-beta.17",
   "description": "Stripe Terminal React Native SDK",
   "main": "lib/commonjs/index",
@@ -39,13 +39,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/stripe/stripe-terminal-react-native",
+  "repository": "https://github.com/Pure-Pet-Food/stripe-terminal-react-native",
   "author": "Stripe",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/stripe/stripe-terminal-react-native"
+    "url": "https://github.com/Pure-Pet-Food/stripe-terminal-react-native"
   },
-  "homepage": "https://github.com/stripe/stripe-terminal-react-native#readme",
+  "homepage": "https://github.com/Pure-Pet-Food/stripe-terminal-react-native#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
