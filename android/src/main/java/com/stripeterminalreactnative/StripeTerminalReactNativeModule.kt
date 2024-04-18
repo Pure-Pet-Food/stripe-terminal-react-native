@@ -217,6 +217,7 @@ class StripeTerminalReactNativeModule(reactContext: ReactApplicationContext) :
                     getBoolean(params, "simulated")
                 )
                 DiscoveryMethod.HANDOFF -> DiscoveryConfiguration.HandoffDiscoveryConfiguration()
+                 },
             listener,
             listener
         )
